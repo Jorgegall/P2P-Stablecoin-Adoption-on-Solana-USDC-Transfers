@@ -1,0 +1,36 @@
+WITH transfers AS (
+  SELECT 
+    TX_FROM,
+    MINT,
+    DATE_TRUNC('month', BLOCK_TIMESTAMP) AS month
+  FROM solana.core.fact_transfers
+  WHERE MINT IN (
+    'Es9vMFrzaCERaMyoz3Cw2D7GpdeufyPv4wMu42Fi7G8P',  -- USDT
+    'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'   -- USDC
+  )
+  AND BLOCK_TIMESTAMP >= '2024-07-01'
+  AND BLOCK_TIMESTAMP < '2025-07-01'
+),
+
+first_tx_per_wallet AS (
+  SELECT 
+    TX_FROM,
+    MINT,
+    MIN(month) AS first_month
+  FROM transfers
+  GROUP BY TX_FROM, MINT
+)
+
+SELECT 
+  t.month,
+  CASE 
+    WHEN t.MINT = 'Es9vMFrzaCERaMyoz3Cw2D7GpdeufyPv4wMu42Fi7G8P' THEN 'USDT'
+    WHEN t.MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v' THEN 'USDC'
+  END AS stablecoin,
+  COUNT(DISTINCT CASE WHEN t.month = f.first_month THEN t.TX_FROM END) AS new_users,
+  COUNT(DISTINCT CASE WHEN t.month > f.first_month THEN t.TX_FROM END) AS returning_users
+FROM transfers t
+JOIN first_tx_per_wallet f 
+  ON t.TX_FROM = f.TX_FROM AND t.MINT = f.MINT
+GROUP BY t.month, stablecoin
+ORDER BY t.month, stablecoin;
