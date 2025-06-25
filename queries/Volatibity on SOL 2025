@@ -1,0 +1,18 @@
+ITH weekly_volume AS (
+  SELECT
+    DATE_TRUNC('week', block_timestamp) AS week,
+    COUNT(*) AS weekly_swaps
+  FROM
+    solana.defi.fact_swaps
+  WHERE
+    block_timestamp >= '2025-01-01'
+  GROUP BY
+    week
+)
+SELECT
+  AVG(weekly_swaps) AS avg_swaps,
+  STDDEV(weekly_swaps) AS swaps_volatility,
+  STDDEV(weekly_swaps) / NULLIF(AVG(weekly_swaps), 0) AS relative_volatility
+FROM
+  weekly_volume;
+
