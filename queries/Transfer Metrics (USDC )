@@ -1,0 +1,20 @@
+SELECT 
+  DATE_TRUNC('month', BLOCK_TIMESTAMP) AS month,
+  CASE
+    WHEN MINT = 'Es9vMFrzaCERaMyoz3Cw2D7GpdeufyPv4wMu42Fi7G8P' THEN 'USDT'
+    WHEN MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v' THEN 'USDC'
+  END AS stablecoin,
+  COUNT(*) AS total_transfers,
+  COUNT(DISTINCT TX_FROM) AS unique_wallets,
+  ROUND(SUM(AMOUNT) / 1e6, 2) AS total_volume_usd,
+  ROUND(AVG(AMOUNT) / 1e6, 4) AS avg_transfer_usd,
+  ROUND(COUNT(*)::numeric / NULLIF(COUNT(DISTINCT TX_FROM), 0), 2) AS avg_transfers_per_wallet
+FROM solana.core.fact_transfers
+WHERE MINT IN (
+    'Es9vMFrzaCERaMyoz3Cw2D7GpdeufyPv4wMu42Fi7G8P',  -- USDT
+    'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'   -- USDC
+)
+AND BLOCK_TIMESTAMP >= '2024-07-01'
+AND BLOCK_TIMESTAMP < '2025-07-01'
+GROUP BY month, stablecoin
+ORDER BY month, stablecoin;
