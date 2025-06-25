@@ -1,7 +1,15 @@
-# P2P-Stablecoin-Adoption-on-Solana-USDC-Transfers
 # 💸 P2P Stablecoin Adoption on Solana – USDC Transfers
 
 This project explores the peer-to-peer (P2P) usage of **USDC** on the **Solana blockchain**, analyzing how stablecoins are being transferred between wallets for non-custodial, decentralized use cases.
+
+How is the monthly volume of P2P USDC transfers evolving, and what trends are observable in average transfer sizes?
+Tracking the transfer volume alongside average transfer sizes provides insights into usage intensity and economic activity within the P2P USDC ecosystem on Solana.
+
+Disclaimer:
+This dashboard is for research and informational purposes only. It does not constitute financial advice or investment recommendations. Data is sourced from on-chain records on Solana and may be subject to inherent limitations such as delays or incompleteness. Users should verify results independently before making decisions.
+
+Data availability:
+The data used for this analysis is sourced from publicly available on-chain transaction records on Solana, specifically focusing on USDC token transfers. The dataset excludes transactions involving contracts, decentralized exchanges, or centralized exchange wallets to isolate genuine peer-to-peer activity among retail users. The timeframe covered spans from July 2024 to June 2025.
 
 📊 **Dashboard on Flipside**:  
 [https://flipsidecrypto.xyz/0xJrgeFi/p2p-stablecoin-adoption-on-solana-usdc-transfers-6IsQIS](https://flipsidecrypto.xyz/0xJrgeFi/p2p-stablecoin-adoption-on-solana-usdc-transfers-6IsQIS)
@@ -22,6 +30,9 @@ These insights aim to understand stablecoin utility beyond DeFi protocols, looki
 ---
 
 ## 📁 Structure
+/queries → Raw SQL queries used in the dashboard
+/screenshots → Visual preview of the dashboard
+README.md → Project documentation (this file)
 ## 📈 Key Metrics
 
 | Metric                         | Description                                                                 |
